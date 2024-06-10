@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm/utils/routes/routes.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
-import 'package:mvvm/view/login_screen.dart';
+import 'package:mvvm/view/login_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-     initialRoute: RoutesName.login,
+      initialRoute: RoutesName.login,
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.generateRoute,
     );
   }
 }
-
