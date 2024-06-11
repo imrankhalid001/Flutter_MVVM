@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm/res/components/round_button.dart';
+import 'package:mvvm/res/components/round_button.dart'
+
+import 'package:mvvm/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
+
+;
 
 import '../utils/utils.dart';
 
@@ -33,7 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height * 1;
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height * 1;
 
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         suffixIcon: InkWell(
                             onTap: () {
                               _obsecurePassword.value =
-                                  !_obsecurePassword.value;
+                              !_obsecurePassword.value;
                             },
                             child: Icon(_obsecurePassword.value
                                 ? Icons.visibility_off_outlined
@@ -90,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // login button
             RoundButton(
               title: 'Login',
+              loading: authViewModel.loading,
               onPress: () {
                 if (_emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Please enter email', context);
@@ -99,10 +110,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   Utils.flushBarErrorMessage(
                       'Please enter 6 digit password', context);
                 } else {
+                  Map data = {
+                    'email': _emailController.text.toString(),
+                    'password': _passwordController.text.toString()
+                  };
+
+                  authViewModel.loginApi(data, context);
                   print('api hit');
                 }
               },
             ),
+
+            SizedBox(
+              height: height * .02,
+            ),
+            Text("Don't have an Account? Sign UP"),
+
+
           ],
         ),
       ),
