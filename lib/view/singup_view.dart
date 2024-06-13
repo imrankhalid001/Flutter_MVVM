@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm/res/components/round_button.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
-
-import 'package:mvvm/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../res/color.dart';
+import '../res/components/round_button.dart';
 import '../utils/utils.dart';
+import '../view_model/auth_view_model.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _SignUpViewState extends State<SignUpView> {
+
 
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
@@ -46,7 +47,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.buttonColor,
-        title: const Text('Login'),
+        title: const Text('SignUp'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -84,7 +85,7 @@ class _LoginViewState extends State<LoginView> {
                         suffixIcon: InkWell(
                             onTap: () {
                               _obsecurePassword.value =
-                                  !_obsecurePassword.value;
+                              !_obsecurePassword.value;
                             },
                             child: Icon(_obsecurePassword.value
                                 ? Icons.visibility_off_outlined
@@ -98,8 +99,8 @@ class _LoginViewState extends State<LoginView> {
 
             // login button
             RoundButton(
-              title: 'Login',
-              loading: authViewModel.loading,
+              title: 'SignUp',
+              loading: authViewModel.signUpLoading,   
               onPress: () {
                 if (_emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Please enter email', context);
@@ -114,7 +115,7 @@ class _LoginViewState extends State<LoginView> {
                     'password': _passwordController.text.toString()
                   };
 
-                  authViewModel.loginApi(data, context);
+                  authViewModel.singUpApi(data, context);
                   print('api hit');
                 }
               },
@@ -125,9 +126,9 @@ class _LoginViewState extends State<LoginView> {
             ),
             InkWell(
               onTap: (){
-                Navigator.pushNamed(context, RoutesName.signUp);
+                Navigator.pushNamed(context, RoutesName.login);
               },
-              child: Text("Don't have an Account? Sign UP"),
+              child: Text("Already have an account? Login"),
             ),
           ],
         ),

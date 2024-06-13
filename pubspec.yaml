@@ -39,6 +39,7 @@ dependencies:
   http:
   another_flushbar: ^1.12.30
   provider: ^6.1.2
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
