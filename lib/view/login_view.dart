@@ -3,8 +3,10 @@ import 'package:mvvm/res/components/round_button.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
 
 import 'package:mvvm/view_model/auth_view_model.dart';
+import 'package:mvvm/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../model/user_model.dart';
 import '../res/color.dart';
 import '../utils/utils.dart';
 
@@ -19,8 +21,8 @@ class _LoginViewState extends State<LoginView> {
 
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: "eve.holt@reqres.in");
+  final TextEditingController _passwordController = TextEditingController(text: "cityslicka");
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -40,6 +42,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
+    final userViewModel = Provider.of<UserViewModel>(context);
 
     final height = MediaQuery.of(context).size.height * 1;
 
@@ -100,7 +103,7 @@ class _LoginViewState extends State<LoginView> {
             RoundButton(
               title: 'Login',
               loading: authViewModel.loading,
-              onPress: () {
+              onPress: () async {
                 if (_emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Please enter email', context);
                 } else if (_passwordController.text.isEmpty) {
@@ -114,7 +117,14 @@ class _LoginViewState extends State<LoginView> {
                     'password': _passwordController.text.toString()
                   };
 
-                  authViewModel.loginApi(data, context);
+                  // Call login API
+                  UserModel? user = await authViewModel.loginApi(data, context);
+
+                  if (user != null) {
+                    // After successful login, save user data
+                    await userViewModel.saveUser(user);
+                  }
+
                   print('api hit');
                 }
               },

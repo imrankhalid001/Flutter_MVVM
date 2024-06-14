@@ -4,13 +4,17 @@ import 'package:mvvm/repository/auth_repository.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
 import 'package:mvvm/utils/utils.dart';
 
+import '../model/user_model.dart';
+
 class AuthViewModel with ChangeNotifier {
   final _myRepo = AuthRepository();
 
   bool _loading = false;
+
   bool get loading => _loading;
 
   bool _signUpLoading = false;
+
   bool get signUpLoading => _signUpLoading;
 
   setLoading(bool value) {
@@ -24,24 +28,33 @@ class AuthViewModel with ChangeNotifier {
   }
 
   // login api
-  Future<void> loginApi(dynamic data, BuildContext context) async {
+  Future<UserModel?> loginApi(dynamic data, BuildContext context) async {
     setLoading(true);
-    _myRepo.loginApi(data).then((value) {
+
+    try {
+      final value = await _myRepo.loginApi(data);
       setLoading(false);
       Utils.toastMessage('Login Successfully');
+
+      // Assuming the response contains UserModel data
+      final user = UserModel(token: value['token']);
+
+      print(user);
+
       Navigator.pushNamed(context, RoutesName.home);
       if (kDebugMode) {
         print(value.toString());
       }
-    }).onError((error, stackTrace) {
+
+      return user;
+    } catch (error) {
       setLoading(false);
-
-
       if (kDebugMode) {
         Utils.flushBarErrorMessage(error.toString(), context);
         print(error.toString());
       }
-    });
+      return null;
+    }
   }
 
   // signup api
@@ -57,13 +70,10 @@ class AuthViewModel with ChangeNotifier {
     }).onError((error, stackTrace) {
       setSignUpLoading(false);
 
-
       if (kDebugMode) {
         Utils.flushBarErrorMessage(error.toString(), context);
         print(error.toString());
       }
     });
   }
-
-
 }

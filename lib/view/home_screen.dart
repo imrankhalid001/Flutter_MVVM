@@ -15,16 +15,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final userPreferencs = Provider.of<UserViewModel>(context);
     return Scaffold(
-      body: Column(
-        children: [
-          InkWell(
-              onTap: () {
-                userPreferencs.remove().then((value) {
-                  Navigator.pushNamed(context, RoutesName.login);
-                });
-              },
-              child: SafeArea(child: const Text('Logout')))
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+                onTap: () {
+                  userPreferencs.remove().then((value) {
+                    Navigator.pushNamed(context, RoutesName.login);
+                  });
+                },
+                child: SafeArea(child: const Text('Logout', style: TextStyle(fontSize: 20),)))
+          ],
+        ),
       ),
     );
   }
