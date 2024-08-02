@@ -51,6 +51,8 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: AppColors.buttonColor,
         title: const Text('Login'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        
       ),
       body: SafeArea(
         child: Column(

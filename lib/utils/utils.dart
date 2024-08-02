@@ -10,6 +10,8 @@ class Utils {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
+
+
   static toastMessage(String message) {
     Fluttertoast.showToast(msg: message);
   }
